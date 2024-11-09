@@ -1,0 +1,37 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity shift_register is
+    Port (
+        clk : in STD_LOGIC;                      -- Input clock (50 MHz)
+        data_in : in STD_LOGIC;                  -- Serial data input
+        led_out : out STD_LOGIC_VECTOR (3 downto 0) -- Output connected to LEDs
+    );
+end shift_register;
+
+architecture Behavioral of shift_register is
+    signal divided_clk : STD_LOGIC;             -- Slower clock signal
+    signal shift_reg : STD_LOGIC_VECTOR(3 downto 0) := "0000"; -- 4-bit shift register
+begin
+
+    -- Instantiate the clock divider
+    ClockDivider_inst : entity work.ClockDivider
+    port map (
+        clk_in => clk,
+        clk_out => divided_clk
+    );
+
+    -- Shift register logic using divided clock
+    process(divided_clk)
+    begin
+        if rising_edge(divided_clk) then
+            shift_reg <= shift_reg(2 downto 0) & data_in;  -- Shift left
+        end if;
+    end process;
+
+    -- Connect shift register output to LEDs
+    led_out <= shift_reg;
+
+end Behavioral;
