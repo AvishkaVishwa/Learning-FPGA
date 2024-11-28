@@ -1,0 +1,7 @@
+
+State Machine - |RAM|current_state
+Name current_state.READ_STATE current_state.CLEAR_STATE current_state.WRITE_STATE current_state.START_STATE 
+current_state.START_STATE 0 0 0 0 
+current_state.WRITE_STATE 0 0 1 1 
+current_state.CLEAR_STATE 0 1 0 1 
+current_state.READ_STATE 1 0 0 1 
